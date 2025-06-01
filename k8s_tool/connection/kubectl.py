@@ -49,6 +49,13 @@ class KubectlConnector:
             version_cmd = ["kubectl", "version", "--client", "--output=json"]
             self._execute_command(version_cmd)
             
+            # If a context is provided, set it as the current context in kubeconfig
+            if self.context:
+                subprocess.run([
+                    "kubectl", "config", "use-context", self.context,
+                    "--kubeconfig", self.kubeconfig
+                ], check=False)
+            
             # Prepare base kubectl command with config and context
             base_cmd = ["kubectl"]
             
