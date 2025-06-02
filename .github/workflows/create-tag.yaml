@@ -1,0 +1,39 @@
+name: Create Tag
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: Get latest tag
+        id: get_latest_tag
+        run: |
+          # Get the latest tag, defaulting to v0.0 if none exists
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0")
+          echo "Latest tag: $LATEST_TAG"
+          
+          # Extract version number and increment by 0.1
+          VERSION=$(echo $LATEST_TAG | sed 's/v//')
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          NEW_MINOR=$((MINOR + 1))
+          NEW_VERSION="v$MAJOR.$NEW_MINOR"
+          
+          echo "New version: $NEW_VERSION"
+          echo "new_tag=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create and push tag
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git tag ${{ steps.get_latest_tag.outputs.new_tag }}
+          git push origin ${{ steps.get_latest_tag.outputs.new_tag }}
