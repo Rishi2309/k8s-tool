@@ -22,6 +22,10 @@ jobs:
         pip install -r requirements.txt
         pip install pytest
 
+    - name: Install package
+      run: |
+        pip install .
+
     - name: Run tests
       run: |
         pytest k8s_tool/tests -v 
