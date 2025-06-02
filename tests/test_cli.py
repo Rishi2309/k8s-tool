@@ -1,16 +1,16 @@
 """
 Test cases for CLI commands
 """
-import unittest
-from unittest.mock import Mock, patch
+import os
 import pytest
-import click
-from click.testing import CliRunner
+from unittest.mock import Mock, patch
 from k8s_tool.cli.cli import main
 
-class TestCLI(unittest.TestCase):
-    def setUp(self):
-        self.connector = Mock()
+@pytest.mark.usefixtures("setup_test_env")
+class TestCLI:
+    def setup_method(self):
+        """Setup method to verify kubeconfig is set."""
+        print(f"KUBECONFIG environment variable: {os.environ.get('KUBECONFIG')}")
 
     @patch('k8s_tool.cli.cli.InstallationManager')
     def test_install_helm_command(self, mock_installation_manager):
@@ -83,7 +83,4 @@ class TestCLI(unittest.TestCase):
              patch('sys.exit') as mock_exit:
             main()
             mock_manager.create_deployment.assert_called_once()
-            mock_exit.assert_called_once_with(0)
-
-if __name__ == '__main__':
-    unittest.main() 
+            mock_exit.assert_called_once_with(0) 
