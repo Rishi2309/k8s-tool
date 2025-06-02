@@ -13,8 +13,15 @@ class TestCLI:
         print(f"KUBECONFIG environment variable: {os.environ.get('KUBECONFIG')}")
 
     @patch('k8s_tool.cli.cli.InstallationManager')
-    def test_install_helm_command(self, mock_installation_manager):
+    @patch('k8s_tool.cli.cli.ClusterConnector')
+    def test_install_helm_command(self, mock_connector, mock_installation_manager):
         """Test install helm command"""
+        # Mock the connector
+        mock_conn = Mock()
+        mock_connector.return_value = mock_conn
+        mock_conn.connect.return_value = True
+        
+        # Mock the installation manager
         mock_manager = Mock()
         mock_installation_manager.return_value = mock_manager
         mock_manager.install_helm.return_value = {
@@ -30,8 +37,15 @@ class TestCLI:
             mock_exit.assert_called_once_with(0)
 
     @patch('k8s_tool.cli.cli.InstallationManager')
-    def test_install_keda_command(self, mock_installation_manager):
+    @patch('k8s_tool.cli.cli.ClusterConnector')
+    def test_install_keda_command(self, mock_connector, mock_installation_manager):
         """Test install keda command"""
+        # Mock the connector
+        mock_conn = Mock()
+        mock_connector.return_value = mock_conn
+        mock_conn.connect.return_value = True
+        
+        # Mock the installation manager
         mock_manager = Mock()
         mock_installation_manager.return_value = mock_manager
         mock_manager.install_keda.return_value = {
@@ -47,8 +61,15 @@ class TestCLI:
             mock_exit.assert_called_once_with(0)
 
     @patch('k8s_tool.cli.cli.DeploymentManager')
-    def test_deployment_create_command(self, mock_deployment_manager):
+    @patch('k8s_tool.cli.cli.ClusterConnector')
+    def test_deployment_create_command(self, mock_connector, mock_deployment_manager):
         """Test deployment create command"""
+        # Mock the connector
+        mock_conn = Mock()
+        mock_connector.return_value = mock_conn
+        mock_conn.connect.return_value = True
+        
+        # Mock the deployment manager
         mock_manager = Mock()
         mock_deployment_manager.return_value = mock_manager
         mock_manager.create_deployment.return_value = {
@@ -64,8 +85,15 @@ class TestCLI:
             mock_exit.assert_called_once_with(0)
 
     @patch('k8s_tool.cli.cli.DeploymentManager')
-    def test_deployment_create_with_keda(self, mock_deployment_manager):
+    @patch('k8s_tool.cli.cli.ClusterConnector')
+    def test_deployment_create_with_keda(self, mock_connector, mock_deployment_manager):
         """Test deployment create with KEDA"""
+        # Mock the connector
+        mock_conn = Mock()
+        mock_connector.return_value = mock_conn
+        mock_conn.connect.return_value = True
+        
+        # Mock the deployment manager
         mock_manager = Mock()
         mock_deployment_manager.return_value = mock_manager
         mock_manager.create_deployment.return_value = {
@@ -74,7 +102,7 @@ class TestCLI:
             "deployment_id": "test-app-123"
         }
 
-        with patch('sys.argv', ['k8s-tool', '--kubeconfig', os.environ['KUBECONFIG'], 'deployment', 'create', 
+        with patch('sys.argv', ['k8s-tool', '--kubeconfig', os.environ['KUBECONFIG'], 'deployment', 'create',
                                '--name', 'test-app', 
                                '--image', 'nginx:latest',
                                '--enable-keda',

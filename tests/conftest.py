@@ -12,8 +12,10 @@ def dummy_kubeconfig():
     temp_dir = tempfile.gettempdir()
     kubeconfig_path = os.path.join(temp_dir, 'dummy-kubeconfig')
     
-    with open(kubeconfig_path, 'w') as f:
-        f.write("""
+    # Create the file if it doesn't exist
+    if not os.path.exists(kubeconfig_path):
+        with open(kubeconfig_path, 'w') as f:
+            f.write("""
 apiVersion: v1
 kind: Config
 clusters:
@@ -31,7 +33,12 @@ users:
   user:
     token: dummy-token
 """)
-    print(f"Created dummy kubeconfig at: {kubeconfig_path}")
+        print(f"Created dummy kubeconfig at: {kubeconfig_path}")
+    
+    # Ensure the file exists and is readable
+    assert os.path.exists(kubeconfig_path), f"Kubeconfig file not created at {kubeconfig_path}"
+    assert os.access(kubeconfig_path, os.R_OK), f"Kubeconfig file not readable at {kubeconfig_path}"
+    
     return kubeconfig_path
 
 @pytest.fixture(autouse=True)
@@ -40,7 +47,5 @@ def setup_test_env(dummy_kubeconfig):
     print(f"Setting KUBECONFIG to: {dummy_kubeconfig}")
     os.environ['KUBECONFIG'] = dummy_kubeconfig
     yield
-    # Cleanup
-    if os.path.exists(dummy_kubeconfig):
-        print(f"Cleaning up kubeconfig at: {dummy_kubeconfig}")
-        os.unlink(dummy_kubeconfig) 
+    # Don't clean up the kubeconfig file between tests
+    # It will be cleaned up at the end of the session 
