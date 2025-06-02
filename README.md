@@ -89,6 +89,46 @@ The implementation of `k8s-tool` is structured around several key components:
   - Maintains version history
   - Enables version-specific installations
 
+### Running Tests Locally
+To run the test suite locally, use the following command:
+
+```bash
+# Run all tests
+pytest tests -v
+
+# Run specific test file
+pytest tests/test_cli.py -v
+
+# Run specific test case
+pytest tests/test_cli.py::TestCLI::test_install_helm_command -v
+```
+
+### Troubleshooting
+
+#### KEDA Image Pull Issues
+When using Podman with Kind cluster for local testing, you might encounter TLS verification errors while pulling images. This is a common issue with Podman's default TLS verification settings.
+
+**Error Example:**
+```
+Error: error pulling image "registry.k8s.io/metrics-server/metrics-server:v0.5.2": 
+Error initializing source docker://registry.k8s.io/metrics-server/metrics-server:v0.5.2: 
+error pinging docker registry registry.k8s.io: Get "https://registry.k8s.io/v2/": 
+x509: certificate signed by unknown authority
+```
+
+**Solution:**
+1. Pull the image locally without TLS verification:
+```bash
+podman pull --tls-verify=false registry.k8s.io/metrics-server/metrics-server:v0.5.2
+```
+
+2. Load the image into your Kind cluster:
+```bash
+kind load docker-image registry.k8s.io/metrics-server/metrics-server:v0.5.2 --name {cluster-name}
+```
+
+Replace `{cluster-name}` with your Kind cluster name. This workaround allows you to use the image in your local development environment while maintaining security in production environments.
+
 ## Prerequisites
 
 - Python 3.7 or higher
