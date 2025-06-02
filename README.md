@@ -401,3 +401,21 @@ To create a deployment with resource limits, use the following command:
 ```bash
 k8s-tool deployment create --name <deployment-name> --image <image-name> --cpu-limit 500m --memory-limit 512Mi
 ```
+
+Sample snapshots
+<img width="1439" alt="Screenshot 2025-06-02 at 12 28 17 PM" src="https://github.com/user-attachments/assets/c8870a39-355a-4c54-b245-c5f2abdc5a56" />
+<img width="1440" alt="Screenshot 2025-06-02 at 12 29 01 PM" src="https://github.com/user-attachments/assets/c14d2124-b301-41db-99a9-18df74616739" />
+<img width="1440" alt="Screenshot 2025-06-02 at 12 29 13 PM" src="https://github.com/user-attachments/assets/dc595b78-9da8-4e46-8dc0-98c128a2f028" />
+<img width="1437" alt="Screenshot 2025-06-02 at 12 29 31 PM" src="https://github.com/user-attachments/assets/7ecedd11-967f-4f91-b40c-44c6094d2563" />
+<img width="1440" alt="Screenshot 2025-06-02 at 12 29 44 PM" src="https://github.com/user-attachments/assets/fd51dcd2-bfac-4239-9123-3208db699230" />
+<img width="1440" alt="Screenshot 2025-06-02 at 12 29 49 PM" src="https://github.com/user-attachments/assets/bd59c6f3-0320-423b-aaae-64bdbc832fc1" />
+<img width="1440" alt="Screenshot 2025-06-02 at 12 29 53 PM" src="https://github.com/user-attachments/assets/a2ba8e25-4088-4a64-a69c-3491eb706d05" />
+<img width="1440" alt="Screenshot 2025-06-02 at 12 30 05 PM" src="https://github.com/user-attachments/assets/01b10ee7-acff-4135-8837-0a06b47f6cf8" />
+<img width="1440" alt="Screenshot 2025-06-02 at 12 30 11 PM" src="https://github.com/user-attachments/assets/e83edebb-11e2-4add-84fd-c1cea9db922f" />
+<img width="1247" alt="Screenshot 2025-06-02 at 12 27 53 PM" src="https://github.com/user-attachments/assets/11023923-a859-41c9-96f4-d88b3e9a0197" />
+<img width="1438" alt="Screenshot 2025-06-02 at 12 28 49 PM" src="https://github.com/user-attachments/assets/a290040c-4260-4c07-9cbb-ec1e3881c3e8" />
+<img width="1438" alt="Screenshot 2025-06-02 at 12 28 38 PM" src="https://github.com/user-attachments/assets/4d5b0073-28e3-4ba7-b931-258aca293d2a" />
+<img width="1438" alt="Screenshot 2025-06-02 at 12 28 27 PM" src="https://github.com/user-attachments/assets/c08700cf-12f8-4de1-a598-333324b31bee" />
+<img width="1430" alt="Screenshot 2025-06-02 at 12 28 02 PM" src="https://github.com/user-attachments/assets/577a1de9-3e66-457f-a641-03c321a4781f" />
+
+
