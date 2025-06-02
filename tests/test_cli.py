@@ -23,7 +23,7 @@ class TestCLI:
             "version": "v3.16.3"
         }
 
-        with patch('sys.argv', ['k8s-tool', 'install', 'helm']), \
+        with patch('sys.argv', ['k8s-tool', '--kubeconfig', os.environ['KUBECONFIG'], 'install', 'helm']), \
              patch('sys.exit') as mock_exit:
             main()
             mock_manager.install_helm.assert_called_once()
@@ -40,7 +40,7 @@ class TestCLI:
             "version": "v2.12.0"
         }
 
-        with patch('sys.argv', ['k8s-tool', 'install', 'keda']), \
+        with patch('sys.argv', ['k8s-tool', '--kubeconfig', os.environ['KUBECONFIG'], 'install', 'keda']), \
              patch('sys.exit') as mock_exit:
             main()
             mock_manager.install_keda.assert_called_once()
@@ -57,7 +57,7 @@ class TestCLI:
             "deployment_id": "test-app-123"
         }
 
-        with patch('sys.argv', ['k8s-tool', 'deployment', 'create', '--name', 'test-app', '--image', 'nginx:latest']), \
+        with patch('sys.argv', ['k8s-tool', '--kubeconfig', os.environ['KUBECONFIG'], 'deployment', 'create', '--name', 'test-app', '--image', 'nginx:latest']), \
              patch('sys.exit') as mock_exit:
             main()
             mock_manager.create_deployment.assert_called_once()
@@ -74,7 +74,7 @@ class TestCLI:
             "deployment_id": "test-app-123"
         }
 
-        with patch('sys.argv', ['k8s-tool', 'deployment', 'create', 
+        with patch('sys.argv', ['k8s-tool', '--kubeconfig', os.environ['KUBECONFIG'], 'deployment', 'create', 
                                '--name', 'test-app', 
                                '--image', 'nginx:latest',
                                '--enable-keda',
