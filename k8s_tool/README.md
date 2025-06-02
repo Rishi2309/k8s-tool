@@ -326,5 +326,3 @@ To create a deployment with resource limits, use the following command:
 ```bash
 k8s-tool deployment create --name <deployment-name> --image <image-name> --cpu-limit 500m --memory-limit 512Mi
 ```
-
-
