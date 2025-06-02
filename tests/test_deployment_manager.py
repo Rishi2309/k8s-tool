@@ -1,12 +1,14 @@
 """
 Test cases for DeploymentManager class
 """
-import unittest
+import pytest
 from unittest.mock import Mock, patch
 from k8s_tool.deployment.manager import DeploymentManager
 
-class TestDeploymentManager(unittest.TestCase):
-    def setUp(self):
+@pytest.mark.usefixtures("setup_test_env")
+class TestDeploymentManager:
+    @pytest.fixture(autouse=True)
+    def setup(self):
         self.connector = Mock()
         self.manager = DeploymentManager(self.connector)
 
@@ -32,10 +34,10 @@ class TestDeploymentManager(unittest.TestCase):
                 image="nginx:latest",
                 replicas=1
             )
-            self.assertTrue(result["success"])
-            self.assertIn("deployment_id", result)
-            self.assertIn("message", result)
-            self.assertIn("deployment", result)
+            assert result["success"]
+            assert "deployment_id" in result
+            assert "message" in result
+            assert "deployment" in result
 
     def test_create_deployment_with_service(self):
         """Test deployment creation with service"""
@@ -60,11 +62,11 @@ class TestDeploymentManager(unittest.TestCase):
                 service_type="ClusterIP",
                 ports=[80]
             )
-            self.assertTrue(result["success"])
-            self.assertIn("deployment_id", result)
-            self.assertIn("message", result)
-            self.assertIn("deployment", result)
-            self.assertIn("service", result)
+            assert result["success"]
+            assert "deployment_id" in result
+            assert "message" in result
+            assert "deployment" in result
+            assert "service" in result
 
     def test_create_deployment_with_hpa(self):
         """Test deployment creation with HPA"""
@@ -95,11 +97,11 @@ class TestDeploymentManager(unittest.TestCase):
                 autoscaling_enabled=True,
                 cpu_target_percentage=80
             )
-            self.assertTrue(result["success"])
-            self.assertIn("deployment_id", result)
-            self.assertIn("message", result)
-            self.assertIn("deployment", result)
-            self.assertIn("hpa", result)
+            assert result["success"]
+            assert "deployment_id" in result
+            assert "message" in result
+            assert "deployment" in result
+            assert "hpa" in result
 
     def test_create_deployment_with_keda(self):
         """Test deployment creation with KEDA"""
@@ -136,11 +138,11 @@ class TestDeploymentManager(unittest.TestCase):
                     }
                 }]
             )
-            self.assertTrue(result["success"])
-            self.assertIn("deployment_id", result)
-            self.assertIn("message", result)
-            self.assertIn("deployment", result)
-            self.assertIn("scaled_object", result)
+            assert result["success"]
+            assert "deployment_id" in result
+            assert "message" in result
+            assert "deployment" in result
+            assert "scaled_object" in result
 
     def test_create_deployment_with_resources(self):
         """Test deployment creation with resource limits"""
@@ -167,10 +169,7 @@ class TestDeploymentManager(unittest.TestCase):
                     "memory": "512Mi"
                 }
             )
-            self.assertTrue(result["success"])
-            self.assertIn("deployment_id", result)
-            self.assertIn("message", result)
-            self.assertIn("deployment", result)
-
-if __name__ == '__main__':
-    unittest.main() 
+            assert result["success"]
+            assert "deployment_id" in result
+            assert "message" in result
+            assert "deployment" in result 
