@@ -54,6 +54,41 @@ The implementation of `k8s-tool` is structured around several key components:
   - Test coverage for core functionality
   - Integration tests for end-to-end scenarios
 
+## CI/CD Implementation
+
+### Continuous Integration (CI)
+- **PR Validation**: Every pull request must pass all test cases before merging
+  - Automated test suite runs on every PR creation and update
+  - Test coverage includes CLI commands, deployment management, and installation procedures
+  - PR cannot be merged until all tests pass successfully
+  - Branch protection rules enforce test passing as a mandatory check
+
+### Continuous Deployment (CD)
+- **Version Management**:
+  - Automatic tag creation on every push to master branch
+  - Version format: v0.1, v0.2, v0.3, etc.
+  - Users can install specific versions using the tag version
+  - Example: `pip install git+https://github.com/your-repo.git@v0.1`
+
+- **Branch Protection**:
+  - Master branch is protected against direct pushes
+  - Changes to master must come through pull requests
+  - PR requires at least one review approval
+  - All CI checks must pass before merging
+
+### Workflow Automation
+- **CI Pipeline**:
+  - Runs on every PR and push
+  - Executes test suite
+  - Validates code quality
+  - Ensures consistent behavior across environments
+
+- **CD Pipeline**:
+  - Triggers on successful merges to master
+  - Creates new version tags automatically
+  - Maintains version history
+  - Enables version-specific installations
+
 ## Prerequisites
 
 - Python 3.7 or higher
