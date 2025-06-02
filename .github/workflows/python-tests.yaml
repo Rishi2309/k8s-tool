@@ -28,4 +28,4 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest k8s_tool/tests -v 
+        pytest tests -v 
