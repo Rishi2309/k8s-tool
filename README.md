@@ -54,6 +54,81 @@ The implementation of `k8s-tool` is structured around several key components:
   - Test coverage for core functionality
   - Integration tests for end-to-end scenarios
 
+## CI/CD Implementation
+
+### Continuous Integration (CI)
+- **PR Validation**: Every pull request must pass all test cases before merging
+  - Automated test suite runs on every PR creation and update
+  - Test coverage includes CLI commands, deployment management, and installation procedures
+  - PR cannot be merged until all tests pass successfully
+  - Branch protection rules enforce test passing as a mandatory check
+
+### Continuous Deployment (CD)
+- **Version Management**:
+  - Automatic tag creation on every push to master branch
+  - Version format: v0.1, v0.2, v0.3, etc.
+  - Users can install specific versions using the tag version
+  - Example: `pip install git+https://github.com/your-repo.git@v0.1`
+
+- **Branch Protection**:
+  - Master branch is protected against direct pushes
+  - Changes to master must come through pull requests
+  - PR requires at least one review approval
+  - All CI checks must pass before merging
+
+### Workflow Automation
+- **CI Pipeline**:
+  - Runs on every PR and push
+  - Executes test suite
+  - Validates code quality
+  - Ensures consistent behavior across environments
+
+- **CD Pipeline**:
+  - Triggers on successful merges to master
+  - Creates new version tags automatically
+  - Maintains version history
+  - Enables version-specific installations
+
+### Running Tests Locally
+To run the test suite locally, use the following command:
+
+```bash
+# Run all tests
+pytest tests -v
+
+# Run specific test file
+pytest tests/test_cli.py -v
+
+# Run specific test case
+pytest tests/test_cli.py::TestCLI::test_install_helm_command -v
+```
+
+### Troubleshooting
+
+#### KEDA Image Pull Issues
+When using Podman with Kind cluster for local testing, you might encounter TLS verification errors while pulling images. This is a common issue with Podman's default TLS verification settings.
+
+**Error Example:**
+```
+Error: error pulling image "registry.k8s.io/metrics-server/metrics-server:v0.5.2": 
+Error initializing source docker://registry.k8s.io/metrics-server/metrics-server:v0.5.2: 
+error pinging docker registry registry.k8s.io: Get "https://registry.k8s.io/v2/": 
+x509: certificate signed by unknown authority
+```
+
+**Solution:**
+1. Pull the image locally without TLS verification:
+```bash
+podman pull --tls-verify=false registry.k8s.io/metrics-server/metrics-server:v0.5.2
+```
+
+2. Load the image into your Kind cluster:
+```bash
+kind load docker-image registry.k8s.io/metrics-server/metrics-server:v0.5.2 --name {cluster-name}
+```
+
+Replace `{cluster-name}` with your Kind cluster name. This workaround allows you to use the image in your local development environment while maintaining security in production environments.
+
 ## Prerequisites
 
 - Python 3.7 or higher
