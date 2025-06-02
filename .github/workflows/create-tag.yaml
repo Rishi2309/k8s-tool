@@ -3,7 +3,7 @@ name: Create Tag
 on:
   push:
     branches:
-      - main
+      - master
 
 # Add permissions block
 permissions:
@@ -21,8 +21,14 @@ jobs:
       - name: Get latest tag
         id: get_latest_tag
         run: |
-          # Get the latest tag, defaulting to v0.0 if none exists
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0")
+          # Get all tags and sort them by version number
+          LATEST_TAG=$(git tag -l "v*" | sort -V | tail -n 1)
+          
+          # If no tags exist, default to v0.0
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="v0.0"
+          fi
+          
           echo "Latest tag: $LATEST_TAG"
           
           # Extract version number and increment by 0.1
